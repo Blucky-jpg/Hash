@@ -31,27 +31,37 @@
             width: auto;
             padding: 0.2vw;
             background-color: #ffffff;
-            transform: skew(15deg, 1deg);
             transform-style: flat;
-            box-shadow: -1rem 1rem 2rem rgba(0,0,0,0.5);
             border-radius: 6px;
+            transition: all 1s ease-in-out;
+
+            &:hover {
+                transform: skew(7.5deg, 0deg);
+                box-shadow: -0.75rem 0.75rem 2rem rgba(0,0,0,0.5);
+            }
+            &:not(:hover) {
+                transform: skew(15deg, 1deg);
+                box-shadow: -1.5rem 1.5rem 2rem rgba(0,0,0,0.5);
+            }
             
             .menu1-1 > a, .menu1-2 > a {
-                background-color: #d2dfd7;
+                background-color: #DCE1DE;
                 color: #49A078;
                 display: inline-block;
                 border-radius: 6px;
-                font-size: 1.9vw;
+                font-size: 2vw;
                 margin: 0.5vw;
                 padding: 5vw 5.5vw;
-                border: 2px solid #49A078;
+                border: 2px solid #49A078 ;
+                box-shadow: 0rem 0.1rem 0.5rem rgba(0,0,0,0.5);
                 transition: all 0.4s ease-in-out;
                 &:hover {
                     color: #216869;
                     transform: scale(1.05);
                     background-color: #B9D5BD;
                     border: 2px solid #216869;
-                    border-radius: 60px 20px;
+                    box-shadow: -0.1rem 0.1rem 0.5rem rgba(0,0,0,0.75);
+                    border-radius: 20px;
                 }
             }
         }
@@ -65,6 +75,12 @@
             width: auto;
             border-radius: 6px;
             box-shadow: 0rem 0.5rem 3rem rgba(0,0,0,0.5);
+            transition: all 0.4s ease-in-out;
+
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0rem 0.5rem 3rem rgba(0,0,0,0.75);
+            }
 
             .imgm {
                 height: 90%;
@@ -115,7 +131,7 @@
                     transform: scale(1.05);
                     background-color: #B9D5BD;
                     border: 2px solid #216869;
-                    box-shadow: 0.1rem 0.1rem 0.5rem rgba(0,0,0,0.5);
+                    box-shadow: 0.1rem 0.1rem 0.5rem rgba(0,0,0,0.75);
                     border-radius: 20px;
                 }
             }
