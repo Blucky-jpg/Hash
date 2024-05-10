@@ -4,11 +4,20 @@
     grid-template-columns: 1fr;
     grid-template-rows: repeat(3, 1fr);
     grid-row-gap: 20px;
-    background-color: aliceblue;
+    background-color: rgb(255, 255, 255);
 
     .Überschrift {
-        background-color: bisque;
-        width: 100%;
+        background-color: #ffffff;
+        color:#95d1b5 ;
+        text-align: center;
+        text-decoration-line: underline;
+        font-family: sans-serif;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 120px;
+        letter-spacing: 8px;
+        text-shadow: 0rem 0rem 0.2rem #000000;
+
     }
 
     .menu-container {
@@ -16,7 +25,7 @@
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: 1fr;
         grid-column-gap: 4vw;
-        margin: 2vw;
+        margin: 2.2vw;
         align-items: center;
         text-align: center;
 
@@ -71,7 +80,7 @@
             background-color: rgb(255, 255, 255);
             align-items: center;
             justify-content: center;
-            height: 100%;
+            height: 13vw;
             width: auto;
             border-radius: 6px;
             box-shadow: 0rem 0.5rem 3rem rgba(0,0,0,0.5);
