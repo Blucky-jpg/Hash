@@ -3,7 +3,7 @@
    !sudo apt install git build-essential
 2. Clone this repo 
    ```bash
-   !git clone https://github.com/Ronan-H/md5.git
+   !git clone https://github.com/Blucky-jpg/AVHash.git
    %cd /content/md5
 3. Compile  
    ```bash
