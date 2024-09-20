@@ -90,38 +90,41 @@ void displayHelp() {
 }
 
 void runHashInputLoop() {
-    char inputStr[1002];
-    char *pos;
+    char *inputStr;
     char *hash;
     int strLen = 0;
     Blocks *blocks;
+    
+    // Array of test strings
+    const char* testStrings[] = {
+        "Hello, World!",
+        "Testing MD5 hash",
+        "This is a longer string to test",
+        "EXIT"
+    };
+    int numTests = sizeof(testStrings) / sizeof(testStrings[0]);
 
-    do {
-        // get string input from user
-        printf("Enter a string to hash, or EXIT to exit: ");
-        fgets(inputStr, 1002, stdin);
+    for (int testIndex = 0; testIndex < numTests; testIndex++) {
+        inputStr = (char*)testStrings[testIndex];
+        strLen = strlen(inputStr);
 
-        // find new line character so it can be ignored
-        for (int i = 0; i < 1002; i++) {
-            if (inputStr[i] == '\n') {
-                strLen = i;
-                break;
-            }
-            else if (i == 1001) {
-                printf("                         Input too long! Limit is 1000 characters.\n\n");
-            }
+        if (strLen > 1000) {
+            printf("Input too long! Limit is 1000 characters.\n\n");
+            continue;
         }
 
-        blocks = makeBlocks(inputStr, strLen);
-        // generate hash and display to the user
-        // (even if it was EXIT, maybe they wanted to know what the hash of EXIT is before exiting)
-        hash = md5(blocks);
-        printf("                         MD5 Hash value: %s\n\n", hash);
-    } while(strcmp(inputStr, "EXIT\n") != 0);
+        printf("Testing string: %s\n", inputStr);
 
-    // free allocated memory
-    // (blocks etc. have already been freed in md5())
-    free(hash);
+        blocks = makeBlocks(inputStr, strLen);
+        hash = md5(blocks);
+        printf("MD5 Hash value: %s\n\n", hash);
+
+        free(hash);
+
+        if (strcmp(inputStr, "EXIT") == 0) {
+            break;
+        }
+    }
 }
 
 bool bruteForcePermutations(int length, int index, char *buffer, char *refHash) {
