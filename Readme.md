@@ -4,7 +4,7 @@
 2. Clone this repo 
    ```bash
    !git clone https://github.com/Blucky-jpg/AVHash.git
-   %cd /content/md5
+   %cd /content/AVHash
 3. Compile  
    ```bash
    !gcc md5.c main.c -o md5 -lm
