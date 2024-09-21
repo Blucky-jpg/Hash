@@ -77,8 +77,7 @@ void generateCombinations(char *charset, char *attempt, int position, int maxLen
 }
 
 // Stats printing function running in a separate thread
-void *printStats(void *arg) {
-    size_t *hashCount = (size_t *)arg;
+void printStats(size_t *hashCount) {
     time_t startTime = time(NULL); // Start the timer
     time_t lastTime = startTime;
 
@@ -94,11 +93,9 @@ void *printStats(void *arg) {
             *hashCount = 0;
             lastTime = currentTime;
         }
-        // Sleep to prevent busy-waiting
-        sleep(1);
     }
-    return NULL;
 }
+
 
 int main() {
     // Charset and maximum length for brute-forcing
