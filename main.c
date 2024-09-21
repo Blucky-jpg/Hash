@@ -2,7 +2,6 @@
 #include <getopt.h>
 #include <sys/time.h>
 
-void displayHelp();
 void runHashInputLoop();
 void runCrackUtility();
 bool bruteForcePermutations(int length, int index, char *buffer, char *refHash);
@@ -19,7 +18,6 @@ static int crackFlag;
 static struct option long_options[] =
 {
     // all three of these options just set a flag
-    {"help", no_argument, &helpFlag, 1},
     {"test", no_argument, &testFlag, 1},
     {"hash", no_argument, &hashFlag, 1},
     {"crack", no_argument, &crackFlag, 1},
