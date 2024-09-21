@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 #define NUM_TARGET_HASHES 13
 
@@ -35,6 +36,8 @@ bool isTargetHash(char *generatedHash) {
     return false;
 }
 
+size_t hashCount = 0;  // Counter to track the number of hashes
+
 // Brute-force function (you can modify the charset and maxLen)
 void bruteForceMD5(char *charset, int maxLen) {
     int charsetSize = strlen(charset);
@@ -46,6 +49,7 @@ void bruteForceMD5(char *charset, int maxLen) {
         for (int i = 0; i < charsetSize; i++) {
             attempt[0] = charset[i];
             generateCombinations(charset, attempt, 1, len, charsetSize);
+            hashCount++;
         }
     }
 }
@@ -78,4 +82,24 @@ int main() {
     bruteForceMD5(charset, maxLen);
 
     return 0;
+}
+
+
+void printStats(size_t *hashCount) {
+    time_t startTime = time(NULL); // Start the timer
+    time_t lastTime = startTime;
+
+    while (1) {
+        time_t currentTime = time(NULL);
+        double elapsedTime = difftime(currentTime, lastTime);
+
+        if (elapsedTime >= 5.0) {  // Print every 5 seconds
+            double hashesPerSecond = (*hashCount) / elapsedTime;
+            printf("Hashes per second: %.2f\n", hashesPerSecond);
+
+            // Reset the counters for the next interval
+            *hashCount = 0;
+            lastTime = currentTime;
+        }
+    }
 }
