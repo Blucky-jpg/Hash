@@ -22,6 +22,9 @@ const char *targetHashes[NUM_TARGET_HASHES] = {
     "4ae57592275241e4912bc106ad470b04"
 };
 
+// Prototype for generateCombinations
+void generateCombinations(char *charset, char *attempt, int position, int maxLen, int charsetSize);
+
 // Function to compare generated hash with target hashes
 bool isTargetHash(char *generatedHash) {
     for (int i = 0; i < NUM_TARGET_HASHES; i++) {
@@ -47,6 +50,7 @@ void bruteForceMD5(char *charset, int maxLen) {
     }
 }
 
+// Recursive function to generate combinations
 void generateCombinations(char *charset, char *attempt, int position, int maxLen, int charsetSize) {
     if (position == maxLen) {
         Blocks *blocks = makeBlocks((ubyte *)attempt, strlen(attempt));
