@@ -49,12 +49,10 @@ __host__ bool isTargetHash(char *generatedHash) {
 void bruteForceMD5_CUDA(char *charset, int maxLen) {
     int charsetSize = strlen(charset);
     
-    // Allocate GPU memory and copy data
+   // Allocate GPU memory and copy data
     char *d_charset;
     cudaMalloc((void **)&d_charset, charsetSize * sizeof(char));
     cudaCheckError();
-    cudaMalloc((void **)&d_M, sizeof(word *) * BLOCK_SIZE);
-    cudaCheckError();  // Ensure allocation is successful
     cudaMemcpy(d_charset, charset, charsetSize * sizeof(char), cudaMemcpyHostToDevice);
     cudaCheckError();
 
@@ -65,13 +63,14 @@ void bruteForceMD5_CUDA(char *charset, int maxLen) {
 
     cudaMalloc((void **)&d_M, sizeof(word *) * BLOCK_SIZE);
     cudaCheckError();
-    cudaMalloc((void **)&d_output, sizeof(word) * 4 * BLOCK_SIZE);
-    cudaCheckError();
+    cudaMalloc((void **)&d_M, sizeof(word *) * BLOCK_SIZE);
+    cudaCheckError();  // Ensure allocation is successful
     word *d_T;
     cudaMalloc((void **)&d_T, 65 * sizeof(word));
     cudaCheckError();
     cudaMemcpy(d_T, T, 65 * sizeof(word), cudaMemcpyHostToDevice);
     cudaCheckError();
+
 
     // Compute the total number of combinations
     int totalCombinations = pow(charsetSize, maxLen);
