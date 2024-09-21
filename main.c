@@ -49,11 +49,6 @@ int main(int argc, char **argv) {
         hashFlag = 1;
     }
 
-    // displays a help message if the 'help' option was given
-    if (helpFlag) {
-        displayHelp();
-    }
-
     // run test suite if the 'test' flag option given
     if (testFlag) {
         runTestSuite();
@@ -72,21 +67,6 @@ int main(int argc, char **argv) {
     puts("Exiting...\n");
 
     return 0;
-}
-
-void displayHelp() {
-    // usage based on the NetBSD source code style guide
-    puts("\nUsage: ./md5 [--test] [--help] [--hash | --crack]");
-    puts("  Default argument if no option is specified: --hash\n");
-
-    puts("Options:");
-    puts("  --help:  displays this help message");
-    puts("  --test:  runs the suite of tests against the MD5 algorithm");
-    puts("  --hash:  hashes user input in a loop (DEFAULT OPTION)");
-    puts("  --crack: runs the MD5 cracking utility\n");
-
-    puts("Note: only one of --hash or --crack will be used if both are specified, in that order");
-    puts("      (--test and --help can be used alongside any other option, or on their own)\n");
 }
 
 void runHashInputLoop() {
