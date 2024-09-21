@@ -60,6 +60,8 @@ void bruteForceMD5_CUDA(char *charset, int maxLen) {
     word **d_M;
     word *d_output;
     word T[65];  // MD5 T-table
+    cudaDeviceSetLimit(cudaLimitMallocHeapSize, 1024 * 1024 * 1024);
+
 
     cudaMalloc((void **)&d_M, sizeof(word *) * BLOCK_SIZE);
     cudaCheckError();
@@ -70,8 +72,7 @@ void bruteForceMD5_CUDA(char *charset, int maxLen) {
     cudaCheckError();
     cudaMemcpy(d_T, T, 65 * sizeof(word), cudaMemcpyHostToDevice);
     cudaCheckError();
-
-
+    
     // Compute the total number of combinations
     int totalCombinations = pow(charsetSize, maxLen);
     int numBlocks = (totalCombinations + BLOCK_SIZE - 1) / BLOCK_SIZE;
