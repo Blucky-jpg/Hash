@@ -79,8 +79,8 @@ void bruteForceMD5_CUDA(char *charset, int maxLen) {
 
     // Launch kernel
     md5_bruteforce_Kernel<<<numBlocks, BLOCK_SIZE>>>(d_M, numBlocks, d_T, d_output);
-    cudaDeviceSynchronize();
-    cudaCheckError();
+    cudaDeviceSynchronize();  // Ensure kernel execution is complete
+    cudaCheckError();  // Check for errors after kernel execution
 
     // Copy output back to host
     word *output = (word *)malloc(sizeof(word) * 4 * BLOCK_SIZE);
