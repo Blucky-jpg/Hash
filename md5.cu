@@ -2,7 +2,7 @@
 
 __global__ void md5_bruteforce_Kernel(word **M, int numBlocks, word *T, word *output) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    
+
     if (idx < numBlocks) {
         word *X = M[idx];
         
