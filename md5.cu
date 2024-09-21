@@ -3,9 +3,6 @@
 __global__ void md5_bruteforce_Kernel(word **M, int numBlocks, word *T, word *output) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
 
-    int totalCombinations = pow(charsetSize, maxLen);
-    if (idx >= totalCombinations) return;  // Ensure idx is within the data bounds
-
     if (idx < numBlocks) {
         word *X = M[idx];
         
