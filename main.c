@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+#include <pthread.h>
 
 #define NUM_TARGET_HASHES 13
 
@@ -26,6 +27,8 @@ const char *targetHashes[NUM_TARGET_HASHES] = {
 // Prototype for generateCombinations
 void generateCombinations(char *charset, char *attempt, int position, int maxLen, int charsetSize);
 
+size_t hashCount = 0;  // Counter to track the number of hashes
+
 // Function to compare generated hash with target hashes
 bool isTargetHash(char *generatedHash) {
     for (int i = 0; i < NUM_TARGET_HASHES; i++) {
@@ -35,8 +38,6 @@ bool isTargetHash(char *generatedHash) {
     }
     return false;
 }
-
-size_t hashCount = 0;  // Counter to track the number of hashes
 
 // Brute-force function (you can modify the charset and maxLen)
 void bruteForceMD5(char *charset, int maxLen) {
@@ -49,7 +50,6 @@ void bruteForceMD5(char *charset, int maxLen) {
         for (int i = 0; i < charsetSize; i++) {
             attempt[0] = charset[i];
             generateCombinations(charset, attempt, 1, len, charsetSize);
-            hashCount++;
         }
     }
 }
@@ -65,6 +65,7 @@ void generateCombinations(char *charset, char *attempt, int position, int maxLen
         }
 
         free(generatedHash);
+        hashCount++;  // Increment hash count for each hash generated
         return;
     }
 
@@ -74,18 +75,9 @@ void generateCombinations(char *charset, char *attempt, int position, int maxLen
     }
 }
 
-int main() {
-    // Charset and maximum length for brute-forcing
-    char charset[] = "abcdefghijklmnopqrstuvwxyz0123456789";
-    int maxLen = 5; // adjust based on how many characters you want to test
-
-    bruteForceMD5(charset, maxLen);
-
-    return 0;
-}
-
-
-void printStats(size_t *hashCount) {
+// Stats printing function running in a separate thread
+void *printStats(void *arg) {
+    size_t *hashCount = (size_t *)arg;
     time_t startTime = time(NULL); // Start the timer
     time_t lastTime = startTime;
 
@@ -101,5 +93,26 @@ void printStats(size_t *hashCount) {
             *hashCount = 0;
             lastTime = currentTime;
         }
+        // Sleep to prevent busy-waiting
+        sleep(1);
     }
+    return NULL;
+}
+
+int main() {
+    // Charset and maximum length for brute-forcing
+    char charset[] = "abcdefghijklmnopqrstuvwxyz0123456789";
+    int maxLen = 5; // adjust based on how many characters you want to test
+
+    // Start the stats printing in a separate thread
+    pthread_t statsThread;
+    pthread_create(&statsThread, NULL, printStats, &hashCount);
+
+    // Start brute-forcing
+    bruteForceMD5(charset, maxLen);
+
+    // Wait for the stats thread to finish (it won't, but this is a clean way to join threads)
+    pthread_join(statsThread, NULL);
+
+    return 0;
 }
