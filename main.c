@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <pthread.h>
+#include <unistd.h>
 
 #define NUM_TARGET_HASHES 13
 
