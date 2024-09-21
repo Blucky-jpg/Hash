@@ -1,5 +1,5 @@
-#ifndef MD5
-#define MD5
+#ifndef MD5_H
+#define MD5_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,12 +9,15 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include <cuda_runtime.h>
+
 // RFC: a "word" is a 32 bit quantity
 typedef uint32_t word;
 // 64 bit unsigned integer
 typedef unsigned long long ull;
 // unsigned byte
 typedef unsigned char ubyte;
+typedef unsigned int word;
 
 // integer constants
 // 2^32 (constant from RFC to generate T)
@@ -50,12 +53,7 @@ typedef struct Blocks {
 // function declarations
 char * md5(Blocks *blocks);
 word * generateT();
-struct Blocks * makeBlocks(ubyte *bytes, int length);
-struct Blocks * readFileAsBlocks(char *filePath);
-void printWordBits(word w);
-void printBlocks(struct Blocks *);
-bool isHashEqual(char *hashA, char *hashB);
-void testFileHash(char *filePath, char *expectedHash);
-void runTestSuite();
+__global__ void md5_bruteforce_Kernel(word **M, int numBlocks, word *T, word *output);
+
 
 #endif
