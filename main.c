@@ -46,38 +46,34 @@ __host__ bool isTargetHash(char *generatedHash) {
 void bruteForceMD5_CUDA(char *charset, int maxLen) {
     int charsetSize = strlen(charset);
     
-    // Allocate memory for charset on the device
+    // Allocate GPU memory and copy data
     char *d_charset;
     cudaMalloc((void **)&d_charset, charsetSize * sizeof(char));
     cudaMemcpy(d_charset, charset, charsetSize * sizeof(char), cudaMemcpyHostToDevice);
 
-    // Prepare word *M and word *output on the device
+    // Allocate other memory, launch kernel, and retrieve results
     word **d_M;
     word *d_output;
-    size_t outputSize = sizeof(word) * 4 * BLOCK_SIZE; // Each hash has 4 words (A, B, C, D)
-    cudaMalloc((void **)&d_M, sizeof(word *) * BLOCK_SIZE);
-    cudaMalloc((void **)&d_output, outputSize);
+    word T[65];  // MD5 T-table
 
-    // Prepare the T table on the device
-    word T[65];  // T table for MD5 rounds
-    // Populate T[1] through T[64] here
+    cudaMalloc((void **)&d_M, sizeof(word *) * BLOCK_SIZE);
+    cudaMalloc((void **)&d_output, sizeof(word) * 4 * BLOCK_SIZE);
     word *d_T;
     cudaMalloc((void **)&d_T, 65 * sizeof(word));
     cudaMemcpy(d_T, T, 65 * sizeof(word), cudaMemcpyHostToDevice);
 
-    // Launch the kernel for each possible combination of characters
-    int numBlocks = (maxLen + BLOCK_SIZE - 1) / BLOCK_SIZE;  // Number of blocks required
+    // Launch kernel
+    int numBlocks = (maxLen + BLOCK_SIZE - 1) / BLOCK_SIZE;
     md5_bruteforce_Kernel<<<numBlocks, BLOCK_SIZE>>>(d_M, numBlocks, d_T, d_output);
-    cudaCheckError();
+    cudaDeviceSynchronize(); // Ensure kernel execution is complete
 
-    // Retrieve the output from the device
-    word *output = (word *)malloc(outputSize);
-    cudaMemcpy(output, d_output, outputSize, cudaMemcpyDeviceToHost);
-    cudaCheckError();
+    // Copy output back to host
+    word *output = (word *)malloc(sizeof(word) * 4 * BLOCK_SIZE);
+    cudaMemcpy(output, d_output, sizeof(word) * 4 * BLOCK_SIZE, cudaMemcpyDeviceToHost);
 
-    // Process the output hashes (convert to string and check against target hashes)
+    // Process results
     for (int i = 0; i < numBlocks * BLOCK_SIZE; i++) {
-        char generatedHash[33];
+         char generatedHash[33];
         snprintf(generatedHash, sizeof(generatedHash), "%08x%08x%08x%08x", output[i * 4], output[i * 4 + 1], output[i * 4 + 2], output[i * 4 + 3]);
         
         if (isTargetHash(generatedHash)) {
@@ -86,7 +82,7 @@ void bruteForceMD5_CUDA(char *charset, int maxLen) {
         hashCount++;
     }
 
-    // Free device memory
+    // Free memory
     cudaFree(d_charset);
     cudaFree(d_M);
     cudaFree(d_output);
