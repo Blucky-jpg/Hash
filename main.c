@@ -53,6 +53,8 @@ void bruteForceMD5_CUDA(char *charset, int maxLen) {
     char *d_charset;
     cudaMalloc((void **)&d_charset, charsetSize * sizeof(char));
     cudaCheckError();
+    cudaMalloc((void **)&d_M, sizeof(word *) * BLOCK_SIZE);
+    cudaCheckError();  // Ensure allocation is successful
     cudaMemcpy(d_charset, charset, charsetSize * sizeof(char), cudaMemcpyHostToDevice);
     cudaCheckError();
 
