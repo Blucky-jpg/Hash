@@ -10,6 +10,12 @@ int main() {
 }
 
 void runHashInputLoop() {
+    char *inputStr;
+    char *hash;
+    int strLen = 0;
+    Blocks *blocks;
+    
+    // Array of test strings
     const char* testStrings[] = {
         "Hello, World!",
         "Testing MD5 hash",
@@ -19,8 +25,8 @@ void runHashInputLoop() {
     int numTests = sizeof(testStrings) / sizeof(testStrings[0]);
 
     for (int testIndex = 0; testIndex < numTests; testIndex++) {
-        const char* inputStr = testStrings[testIndex];
-        int strLen = strlen(inputStr);
+        inputStr = (char*)testStrings[testIndex];
+        strLen = strlen(inputStr);
 
         if (strLen > 1000) {
             printf("Input too long! Limit is 1000 characters.\n\n");
@@ -29,9 +35,8 @@ void runHashInputLoop() {
 
         printf("Testing string: %s\n", inputStr);
 
-        // Replace with your MD5 calculation implementation
-        char* hash = calculateMD5(inputStr, strLen);
-
+        blocks = makeBlocks(inputStr, strLen);
+        hash = md5(blocks);
         printf("MD5 Hash value: %s\n\n", hash);
 
         free(hash);
