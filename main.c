@@ -2,7 +2,6 @@
 #include <getopt.h>
 #include <sys/time.h>
 
-void runHashInputLoop();
 bool bruteForcePermutations(int length, int index, char *buffer, char *refHash);
 
 // command line options
@@ -14,15 +13,12 @@ static int hashFlag;
 
 static struct option long_options[] =
 {
-    // all three of these options just set a flag
-    {"test", no_argument, &testFlag, 1},
     {"hash", no_argument, &hashFlag, 1},
     // "terminate the array with an element containing all zeros"
     {0, 0, 0, 0}
 };
 
 int main(int argc, char **argv) {
-    // parse command line arguments
     // (just settings flags, so there's not much to do here)
     int optionIndex;
     int c = 0;
@@ -32,7 +28,7 @@ int main(int argc, char **argv) {
     }
 
     // default if no options are used: run hash input loop
-    if (!(testFlag || hashFlag )) {
+    if (!(hashFlag)) {
         hashFlag = 1;
     }
 
@@ -41,54 +37,9 @@ int main(int argc, char **argv) {
         runTestSuite();
     }
 
-    // run hash input loop if the 'hash' option was given
-    if (hashFlag) {
-        runHashInputLoop();
-    }
-
-    // run crack utility if the 'crack' option was given
-
     puts("Exiting...\n");
 
     return 0;
-}
-
-void runHashInputLoop() {
-    char *inputStr;
-    char *hash;
-    int strLen = 0;
-    Blocks *blocks;
-    
-    // Array of test strings
-    const char* testStrings[] = {
-        "Hello, World!",
-        "Testing MD5 hash",
-        "This is a longer string to test",
-        "EXIT"
-    };
-    int numTests = sizeof(testStrings) / sizeof(testStrings[0]);
-
-    for (int testIndex = 0; testIndex < numTests; testIndex++) {
-        inputStr = (char*)testStrings[testIndex];
-        strLen = strlen(inputStr);
-
-        if (strLen > 1000) {
-            printf("Input too long! Limit is 1000 characters.\n\n");
-            continue;
-        }
-
-        printf("Testing string: %s\n", inputStr);
-
-        blocks = makeBlocks(inputStr, strLen);
-        hash = md5(blocks);
-        printf("MD5 Hash value: %s\n\n", hash);
-
-        free(hash);
-
-        if (strcmp(inputStr, "EXIT") == 0) {
-            break;
-        }
-    }
 }
 
 bool bruteForcePermutations(int length, int index, char *buffer, char *refHash) {
