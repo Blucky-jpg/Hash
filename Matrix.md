@@ -44,26 +44,23 @@ for y in range(len(Matrix) * len(Matrix[0])):
 
 - **len(Matrix)** ist die Anzahl der Objekte in der List, oder auch Zeilen, was hier 3 sind
 
-| | | |
-| :---: | :---: | :---: |
 | ***1*** |  0  |  0  |
+| :---: | :---: | :---: |
 | ***0*** |  1  |  0  |
 | ***0*** |  0  |  1  |
 
 - **len(Matrix[0])** ist die Anzahl der enthaltenen Objekte in der ersten Zeile
 
-| | | |
-| :---: | :---: | :---: |
 | ***1*** | ***0*** | ***0*** |
+| :---: | :---: | :---: |
 |   0   |   1   |   0   |
 |   0   |   0   |   1   |
 
 - also in diesem Fall eine **3x3 Matrix**
 - 4x4 Matrix:
 
-|     |     |     |     |
-| :-: | :-: | :-: | --- |
 |  1  |  0  |  0  | 0   |
+| :-: | :-: | :-: | --- |
 |  0  |  1  |  0  | 0   |
 |  0  |  0  |  1  | 0   |
 |  0  |  0  |  0  | 1   |
